@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+    nodejs:
+        build: 
+            context: .
+            dockerfile: nodejs/dockerfile
+    nginx:
+        image: nginx:latest
+        ports:
+            - '80:80'
+        volumes:
+            - './nginx/conf.d:/etc/nginx/conf.d'
+    mongodb:
+        image: mongo
+        ports:
+            - "27017:27017"
+        volumes:
+            - ./mongodb/db/:/data/db
+    tgbot:
+        build: 
+            context: .
+            dockerfile: botruntime/dockerfile
