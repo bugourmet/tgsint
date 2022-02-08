@@ -70,3 +70,6 @@ git clone -b $TGSINT_SCRIPTS_BRANCH $TGSINT_SCRIPTS_GIT \
     || { echo -e "${YELLOW}Failed to clone from git vie SSH key, trying with HTTPS...${NC}"; git clone -b $TGSINT_SCRIPTS_BRANCH $TGSINT_SCRIPTS_GIT_HTTS; } \
     || { echo -e "${RED}ERR: Failed to clone TGSINT Scripts!!${NC}"; hrexit 11; }
 echo -e "${GREEN}TGSINT Scripts cloned${NC}"
+
+docker-compose up
+docker-compose down
