@@ -15,25 +15,15 @@ DOCKER='docker'
 
 docker-compose down
 
-echo "Self updating"
-UPSTREAM=${1:-'@{u}'}
-LOCAL=$(git rev-parse @)
-REMOTE=$(git rev-parse "$UPSTREAM")
-BASE=$(git merge-base @ "$UPSTREAM")
-BRANCH=git name-rev --name-only HEAD
-
-[[ ! $LOCAL = $REMOTE ]] && [[ $LOCAL = $BASE ]] 
-    && git pull origin $BRANCH && bash ./update.sh && exit 0 || { echo "ERR: Pulling TGSINT failed!!"; hrexit 11; }
-
-
 echo "Updating TGSINT API..."
-BRANCH=git name-rev --name-only HEAD
-cd tgsint-api && git pull origin $BRANCH && cd .. || { echo "ERR: Pulling TGSINT API failed!!"; hrexit 11; }
-
+cd tgsint-api 
+BRANCH=$(git name-rev --name-only HEAD)
+git pull origin $BRANCH && cd .. || { echo "ERR: Pulling TGSINT API failed!!"; hrexit 11; }
 
 echo "Updating TGSINT BOT..."
-BRANCH=git name-rev --name-only HEAD
-cd tgsint-bot && git pull origin $BRANCH && cd .. || { echo "ERR: Pulling TGSINT BOT failed!!"; hrexit 11; }
+cd tgsint-bot
+BRANCH=$(git name-rev --name-only HEAD)
+ git pull origin $BRANCH && cd .. || { echo "ERR: Pulling TGSINT BOT failed!!"; hrexit 11; }
 
-docker-compose up --build
+docker-compose up --build -d
 docker-compose down
